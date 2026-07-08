@@ -1,0 +1,15 @@
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.6
+sqlalchemy>=2.0.35
+pydantic>=2.10
+pydantic-settings>=2.6
+python-multipart>=0.0.9
+openai>=1.51.0
+Pillow>=11.0
+python-dotenv>=1.0.1
+alembic>=1.13.3
+aiofiles>=24.1.0
+# scikit-learn / numpy / pandas: add back once app/ml/train.py implements a real
+# classifier. Omitted for now since they require prebuilt wheels for your Python
+# version (scikit-learn has no Python 3.14 wheel yet and fails to build from source
+# without a C compiler).

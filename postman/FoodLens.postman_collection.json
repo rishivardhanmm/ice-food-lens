@@ -1,0 +1,118 @@
+{
+  "info": {
+    "name": "FoodLens AI",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8000" }
+  ],
+  "item": [
+    {
+      "name": "Health check",
+      "request": { "method": "GET", "url": "{{base_url}}/health" }
+    },
+    {
+      "name": "Analyze food (OpenAI)",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/api/analyze-food",
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            { "key": "image", "type": "file", "src": "" },
+            { "key": "train", "value": "true", "type": "text" },
+            { "key": "source", "value": "postman", "type": "text" },
+            { "key": "user_id", "value": "demo-user", "type": "text" },
+            { "key": "notes", "value": "homemade dinner plate", "type": "text" },
+            { "key": "use_internal_model", "value": "false", "type": "text" },
+            { "key": "fallback_to_openai", "value": "true", "type": "text" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Analyze food (internal model, fallback)",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/api/analyze-food",
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            { "key": "image", "type": "file", "src": "" },
+            { "key": "train", "value": "false", "type": "text" },
+            { "key": "use_internal_model", "value": "true", "type": "text" },
+            { "key": "fallback_to_openai", "value": "true", "type": "text" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Submit correction",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/api/corrections",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"prediction_item_id\": \"REPLACE_ME\",\n  \"corrected_name\": \"grilled chicken breast\",\n  \"corrected_quantity_value\": 150,\n  \"corrected_quantity_unit\": \"g\",\n  \"corrected_calories_kcal\": 250,\n  \"corrected_protein_g\": 46,\n  \"corrected_carbs_g\": 0,\n  \"corrected_fat_g\": 5,\n  \"notes\": \"weighed on kitchen scale\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Import directory (admin mode)",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/api/dataset/import-directory",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"directory_path\": \"C:/Projects/FoodLens/sample_test_images\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Process batch",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/api/dataset/process-batch",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"job_id\": \"REPLACE_ME\",\n  \"action\": \"start\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Export dataset (JSONL)",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/api/dataset/export",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"format\": \"jsonl\"\n}" }
+      }
+    },
+    {
+      "name": "Start training",
+      "request": { "method": "POST", "url": "{{base_url}}/api/train/start" }
+    },
+    {
+      "name": "Training status",
+      "request": { "method": "GET", "url": "{{base_url}}/api/train/status/REPLACE_ME" }
+    },
+    {
+      "name": "List models",
+      "request": { "method": "GET", "url": "{{base_url}}/api/models" }
+    },
+    {
+      "name": "Promote model",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/api/models/promote?model_version_id=REPLACE_ME"
+      }
+    },
+    {
+      "name": "Evaluation summary",
+      "request": { "method": "GET", "url": "{{base_url}}/api/evaluation/summary" }
+    }
+  ]
+}
